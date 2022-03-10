@@ -6,44 +6,63 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/btnMegaSena"
+        android:layout_width="360dp"
+        android:layout_height="87dp"
+        android:layout_marginTop="48dp"
+        android:background="@android:color/transparent"
+        android:foreground="@drawable/mega_sena"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <Button
+        android:id="@+id/btnQuina"
+        android:layout_width="360dp"
+        android:layout_height="87dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:foreground="@drawable/quina"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnMegaSena" />
+
+    <Button
+        android:id="@+id/btnLotoFacil"
+        android:layout_width="360dp"
+        android:layout_height="87dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:foreground="@drawable/lotofacil"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnQuina" />
+
+    <Button
+        android:id="@+id/btnLotoMania"
+        android:layout_width="360dp"
+        android:layout_height="87dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:foreground="@drawable/lotomania"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLotoFacil" />
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Conferir jogos da lotofacil"
-        android:textSize="20sp"
+        android:layout_marginTop="16dp"
+        android:text="Selecione o concurso desejado"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txtNumeros"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Selecione os 15 números sorteados"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtNumeros" />
-
-    <TextView
-        android:id="@+id/txtTeste"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
