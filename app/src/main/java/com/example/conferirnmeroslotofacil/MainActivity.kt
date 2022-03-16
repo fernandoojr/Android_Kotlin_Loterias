@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.conferirnmeroslotofacil.databinding.ActivityMainBinding
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,19 +18,19 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, LoteriaSelecionadaActivity::class.java)
 
         binding.btnMegaSena.setOnClickListener(){
-            intent.putExtra("concurso", "megaSena")
+            intent.putExtra("concurso", "Mega-Sena")
             startActivity(intent)
         }
         binding.btnQuina.setOnClickListener(){
-            intent.putExtra("concurso", "quina")
+            intent.putExtra("concurso", "Quina")
             startActivity(intent)
         }
         binding.btnLotoFacil.setOnClickListener(){
-            intent.putExtra("concurso", "lotoFacil")
+            intent.putExtra("concurso", "LotoFacil")
             startActivity(intent)
         }
         binding.btnLotoMania.setOnClickListener(){
-            intent.putExtra("concurso", "lotoMania")
+            intent.putExtra("concurso", "LotoMania")
             startActivity(intent)
         }
     }
