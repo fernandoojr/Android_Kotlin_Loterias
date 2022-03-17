@@ -10,13 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ConferirNúmerosLotofacil" >
         <activity
-            android:name=".LoteriaSelecionadaActivity"
+            android:name=".Activities.LoteriaSelecionadaActivity"
             android:exported="false" />
         <activity
-            android:name=".LotoFacilActivity"
+            android:name=".Activities.LotoFacilActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

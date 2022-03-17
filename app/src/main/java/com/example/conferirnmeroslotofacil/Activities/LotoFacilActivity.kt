@@ -1,8 +1,9 @@
-package com.example.conferirnmeroslotofacil
+package com.example.conferirnmeroslotofacil.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.conferirnmeroslotofacil.R
 import com.example.conferirnmeroslotofacil.databinding.ActivityLotofacilBinding
 
 class LotoFacilActivity : AppCompatActivity() {
@@ -10,6 +11,7 @@ class LotoFacilActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLotofacilBinding
     private var cont: Int = 0
     private var botoes = Array(25, {i->false})
+    private val sorteados = mutableListOf<Int>(15)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +31,9 @@ class LotoFacilActivity : AppCompatActivity() {
                         j++
                     }
                 }
-
                 for(i: Int in numeros){
                     binding.txtTeste.text = binding.txtTeste.text.toString() + i + " / "
+
                 }
             }else{
                 Toast.makeText(this, "Números insuficientes", Toast.LENGTH_LONG).show()
