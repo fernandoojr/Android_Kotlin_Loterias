@@ -1,6 +1,7 @@
 package com.example.conferirnmeroslotofacil.Activities
 
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.conferirnmeroslotofacil.databinding.ActivityMainBinding

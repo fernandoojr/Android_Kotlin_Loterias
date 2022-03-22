@@ -1,5 +1,6 @@
 package com.example.conferirnmeroslotofacil.Activities
 
+import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -11,7 +12,6 @@ class LotoFacilActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLotofacilBinding
     private var cont: Int = 0
     private var botoes = Array(25, {i->false})
-    private val sorteados = mutableListOf<Int>(15)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,11 +19,13 @@ class LotoFacilActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        var concurso = intent.getStringExtra("concurso")
+        var qt = intent.getIntExtra("qt", 15)
+
+        val sorteados = mutableListOf<Int>(qt)
 
         binding.btnSalvar.setOnClickListener(){
-            if(cont == 15){
-                val numeros: IntArray = IntArray(15)
+            if(cont == qt){
+                val numeros: IntArray = IntArray(qt)
                 var j = 0
                 for(i: Int in 0..24) {
                     if (botoes[i]) {
@@ -31,17 +33,22 @@ class LotoFacilActivity : AppCompatActivity() {
                         j++
                     }
                 }
+                var jogo: String = ""
                 for(i: Int in numeros){
-                    binding.txtTeste.text = binding.txtTeste.text.toString() + i + " / "
-
+                    jogo = jogo + i + ","
                 }
+
+                val banco: SQLiteDatabase = openOrCreateDatabase("app", MODE_PRIVATE, null)
+                banco.execSQL("CREATE TABLE IF NOT EXISTS loteria (loto VARCHAR, numeros VARCHAR)")
+                var sql = "INSERT INTO loteria(loto, numeros) VALUES ('lotofacil', '" + jogo + "')"
+                banco.execSQL(sql)
             }else{
                 Toast.makeText(this, "Números insuficientes", Toast.LENGTH_LONG).show()
             }
         }
 
         binding.btn1.setOnClickListener(){
-            if(cont < 15 && !botoes[0]) {
+            if(cont < qt && !botoes[0]) {
                 cont++
                 botoes[0] = true
                 binding.btn1.setBackgroundColor(getResources().getColor(R.color.black))
@@ -54,7 +61,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn2.setOnClickListener(){
-            if(cont < 15 && !botoes[1]) {
+            if(cont < qt && !botoes[1]) {
                 cont++
                 botoes[1] = true
                 binding.btn2.setBackgroundColor(getResources().getColor(R.color.black))
@@ -67,7 +74,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn3.setOnClickListener(){
-            if(cont < 15 && !botoes[2]) {
+            if(cont < qt && !botoes[2]) {
                 cont++
                 botoes[2] = true
                 binding.btn3.setBackgroundColor(getResources().getColor(R.color.black))
@@ -80,7 +87,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn4.setOnClickListener(){
-            if(cont < 15 && !botoes[3]) {
+            if(cont < qt && !botoes[3]) {
                 cont++
                 botoes[3] = true
                 binding.btn4.setBackgroundColor(getResources().getColor(R.color.black))
@@ -93,7 +100,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn5.setOnClickListener(){
-            if(cont < 15 && !botoes[4]) {
+            if(cont < qt && !botoes[4]) {
                 cont++
                 botoes[4] = true
                 binding.btn5.setBackgroundColor(getResources().getColor(R.color.black))
@@ -106,7 +113,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn6.setOnClickListener(){
-            if(cont < 15 && !botoes[5]) {
+            if(cont < qt && !botoes[5]) {
                 cont++
                 botoes[5] = true
                 binding.btn6.setBackgroundColor(getResources().getColor(R.color.black))
@@ -119,7 +126,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn7.setOnClickListener(){
-            if(cont < 15 && !botoes[6]) {
+            if(cont < qt && !botoes[6]) {
                 cont++
                 botoes[6] = true
                 binding.btn7.setBackgroundColor(getResources().getColor(R.color.black))
@@ -132,7 +139,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn8.setOnClickListener(){
-            if(cont < 15 && !botoes[7]) {
+            if(cont < qt && !botoes[7]) {
                 cont++
                 botoes[7] = true
                 binding.btn8.setBackgroundColor(getResources().getColor(R.color.black))
@@ -145,7 +152,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn9.setOnClickListener(){
-            if(cont < 15 && !botoes[8]) {
+            if(cont < qt && !botoes[8]) {
                 cont++
                 botoes[8] = true
                 binding.btn9.setBackgroundColor(getResources().getColor(R.color.black))
@@ -158,7 +165,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn10.setOnClickListener(){
-            if(cont < 15 && !botoes[9]) {
+            if(cont < qt && !botoes[9]) {
                 cont++
                 botoes[9] = true
                 binding.btn10.setBackgroundColor(getResources().getColor(R.color.black))
@@ -171,7 +178,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn11.setOnClickListener(){
-            if(cont < 15 && !botoes[10]) {
+            if(cont < qt && !botoes[10]) {
                 cont++
                 botoes[10] = true
                 binding.btn11.setBackgroundColor(getResources().getColor(R.color.black))
@@ -184,7 +191,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn12.setOnClickListener(){
-            if(cont < 15 && !botoes[11]) {
+            if(cont < qt && !botoes[11]) {
                 cont++
                 botoes[11] = true
                 binding.btn12.setBackgroundColor(getResources().getColor(R.color.black))
@@ -197,7 +204,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn13.setOnClickListener(){
-            if(cont < 15 && !botoes[12]) {
+            if(cont < qt && !botoes[12]) {
                 cont++
                 botoes[12] = true
                 binding.btn13.setBackgroundColor(getResources().getColor(R.color.black))
@@ -210,7 +217,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn14.setOnClickListener(){
-            if(cont < 15 && !botoes[13]) {
+            if(cont < qt && !botoes[13]) {
                 cont++
                 botoes[13] = true
                 binding.btn14.setBackgroundColor(getResources().getColor(R.color.black))
@@ -223,7 +230,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn15.setOnClickListener(){
-            if(cont < 15 && !botoes[14]) {
+            if(cont < qt && !botoes[14]) {
                 cont++
                 botoes[14] = true
                 binding.btn15.setBackgroundColor(getResources().getColor(R.color.black))
@@ -236,7 +243,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn16.setOnClickListener(){
-            if(cont < 15 && !botoes[15]) {
+            if(cont < qt && !botoes[15]) {
                 cont++
                 botoes[15] = true
                 binding.btn16.setBackgroundColor(getResources().getColor(R.color.black))
@@ -249,7 +256,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn17.setOnClickListener(){
-            if(cont < 15 && !botoes[16]) {
+            if(cont < qt && !botoes[16]) {
                 cont++
                 botoes[16] = true
                 binding.btn17.setBackgroundColor(getResources().getColor(R.color.black))
@@ -262,7 +269,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn18.setOnClickListener(){
-            if(cont < 15 && !botoes[17]) {
+            if(cont < qt && !botoes[17]) {
                 cont++
                 botoes[17] = true
                 binding.btn18.setBackgroundColor(getResources().getColor(R.color.black))
@@ -275,7 +282,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn19.setOnClickListener(){
-            if(cont < 15 && !botoes[18]) {
+            if(cont < qt && !botoes[18]) {
                 cont++
                 botoes[18] = true
                 binding.btn19.setBackgroundColor(getResources().getColor(R.color.black))
@@ -288,7 +295,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn20.setOnClickListener(){
-            if(cont < 15 && !botoes[19]) {
+            if(cont < qt && !botoes[19]) {
                 cont++
                 botoes[19] = true
                 binding.btn20.setBackgroundColor(getResources().getColor(R.color.black))
@@ -301,7 +308,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn21.setOnClickListener(){
-            if(cont < 15 && !botoes[20]) {
+            if(cont < qt && !botoes[20]) {
                 cont++
                 botoes[20] = true
                 binding.btn21.setBackgroundColor(getResources().getColor(R.color.black))
@@ -314,7 +321,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn22.setOnClickListener(){
-            if(cont < 15 && !botoes[21]) {
+            if(cont < qt && !botoes[21]) {
                 cont++
                 botoes[21] = true
                 binding.btn22.setBackgroundColor(getResources().getColor(R.color.black))
@@ -327,7 +334,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn23.setOnClickListener(){
-            if(cont < 15 && !botoes[22]) {
+            if(cont < qt && !botoes[22]) {
                 cont++
                 botoes[22] = true
                 binding.btn23.setBackgroundColor(getResources().getColor(R.color.black))
@@ -340,7 +347,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn24.setOnClickListener(){
-            if(cont < 15 && !botoes[23]) {
+            if(cont < qt && !botoes[23]) {
                 cont++
                 botoes[23] = true
                 binding.btn24.setBackgroundColor(getResources().getColor(R.color.black))
@@ -353,7 +360,7 @@ class LotoFacilActivity : AppCompatActivity() {
             }
         }
         binding.btn25.setOnClickListener(){
-            if(cont < 15 && !botoes[24]) {
+            if(cont < qt && !botoes[24]) {
                 cont++
                 botoes[24] = true
                 binding.btn25.setBackgroundColor(getResources().getColor(R.color.black))
