@@ -9,8 +9,15 @@ import android.os.Bundle
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.example.conferirnmeroslotofacil.Model.Result
 import com.example.conferirnmeroslotofacil.R
+import com.example.conferirnmeroslotofacil.Services.DataService
+import com.example.conferirnmeroslotofacil.Services.EndPoint
 import com.example.conferirnmeroslotofacil.databinding.ActivityLoteriaSelecionadaBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.lang.IndexOutOfBoundsException
 import java.lang.NumberFormatException
 import kotlin.Exception
 
@@ -18,16 +25,10 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoteriaSelecionadaBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityLoteriaSelecionadaBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+    override fun onStart() {
+        super.onStart()
 
-        var concurso = intent.getStringExtra("concurso")
-
-        binding.txtTexto.text = concurso
-
+        binding.txtJogo.text = ""
 
         try {
             val banco: SQLiteDatabase = openOrCreateDatabase("app", MODE_PRIVATE, null)
@@ -44,27 +45,30 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
                 var loto: String = cursor.getString(indiceLoto)
                 var numeros: String = cursor.getString(indiceNumeros)
                 binding.txtJogo.text = binding.txtJogo.text.toString() + numeros + "\n"
+                //if(binding.txtJogo.text == "\n" || binding.txtJogo.text == "" || binding.txtJogo.text == null)
+                //binding.txtJogo.text = "Você não possui jogo cadastrado ainda"
+
                 cursor.moveToNext();
             }
-        }catch (ex: Exception){
+        }catch (ex: IndexOutOfBoundsException){
 
+        }catch (ex: Exception){
+            binding.txtJogo.text = "Você não possui jogo cadastrado ainda"
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityLoteriaSelecionadaBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        var concurso = intent.getStringExtra("concurso")
+
+        binding.txtTexto.text = concurso
 
         binding.btnCadastrarJogo.setOnClickListener(){
             if(concurso.equals("LotoFacil")){
-                /*
-                val builder = AlertDialog.Builder(this)
-                builder.setMessage("teste")
-                builder.setPositiveButton("Confirmar", DialogInterface.OnClickListener{
-                        dialog, id ->
-                        val intent = Intent(this, LotoFacilActivity::class.java)
-                        startActivity(intent)
-                    })
-                    .setNegativeButton("Cancelar", DialogInterface.OnClickListener{
-                        dialog, id ->
-                    })
-                builder.create().show()*/
-
                 val builder = AlertDialog.Builder(this)
                 val inflater = layoutInflater
                 builder.setTitle("Selecione a quantidade de números do jogo")
@@ -80,5 +84,29 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
                 builder.show()
             }
         }
+
+        binding.btnTeste.setOnClickListener(){
+            getData()
+        }
+    }
+
+    fun getData() {
+        val retrofitClient = DataService
+            .getRetrofitInstance("https://loteriascaixa-api.herokuapp.com/api/")
+
+        val endpoint = retrofitClient.create(EndPoint::class.java)
+        val callback = endpoint.getConcurso()
+
+        callback.enqueue(object : Callback<Result> {
+            override fun onFailure(call: Call<Result>, t: Throwable) {
+                Toast.makeText(baseContext, t.message, Toast.LENGTH_SHORT).show()
+            }
+
+
+            override fun onResponse(call: Call<Result>, response: Response<Result>) {
+                    binding.txtResult.text = binding.txtResult.text.toString().plus(response.body())
+            }
+        })
+
     }
 }

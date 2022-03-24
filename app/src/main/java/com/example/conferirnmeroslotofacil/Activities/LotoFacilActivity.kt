@@ -42,6 +42,7 @@ class LotoFacilActivity : AppCompatActivity() {
                 banco.execSQL("CREATE TABLE IF NOT EXISTS loteria (loto VARCHAR, numeros VARCHAR)")
                 var sql = "INSERT INTO loteria(loto, numeros) VALUES ('lotofacil', '" + jogo + "')"
                 banco.execSQL(sql)
+                finish()
             }else{
                 Toast.makeText(this, "Números insuficientes", Toast.LENGTH_LONG).show()
             }

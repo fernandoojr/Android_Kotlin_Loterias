@@ -16,6 +16,9 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        //val banco: SQLiteDatabase = openOrCreateDatabase("app", MODE_PRIVATE, null)
+        //banco.execSQL("DROP TABLE loteria")
+
         val intent = Intent(this, LoteriaSelecionadaActivity::class.java)
 
         binding.btnMegaSena.setOnClickListener(){
