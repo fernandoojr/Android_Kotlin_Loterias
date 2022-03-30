@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -18,7 +19,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.IndexOutOfBoundsException
-import java.lang.NumberFormatException
 import kotlin.Exception
 
 class LoteriaSelecionadaActivity : AppCompatActivity() {
@@ -32,17 +32,15 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
 
         try {
             val banco: SQLiteDatabase = openOrCreateDatabase("app", MODE_PRIVATE, null)
-            var consulta: String = "SELECT loto, numeros FROM loteria where loto = 'lotofacil'"
-            var cursor: Cursor = banco.rawQuery(consulta, null);
+            var consulta = "SELECT loto, numeros FROM loteria where loto = 'lotofacil'"
+            var cursor: Cursor = banco.rawQuery(consulta, null)
 
-            var indiceLoto = cursor.getColumnIndex("loto")
             var indiceNumeros = cursor.getColumnIndex("numeros")
 
 
 
             cursor.moveToFirst()
             while (cursor != null) {
-                var loto: String = cursor.getString(indiceLoto)
                 var numeros: String = cursor.getString(indiceNumeros)
                 binding.txtJogo.text = binding.txtJogo.text.toString() + numeros + "\n"
                 //if(binding.txtJogo.text == "\n" || binding.txtJogo.text == "" || binding.txtJogo.text == null)
@@ -50,6 +48,7 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
 
                 cursor.moveToNext();
             }
+            cursor.close()
         }catch (ex: IndexOutOfBoundsException){
 
         }catch (ex: Exception){
@@ -62,6 +61,8 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
         binding = ActivityLoteriaSelecionadaBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        getUltimo()
 
         var concurso = intent.getStringExtra("concurso")
 
@@ -76,7 +77,7 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
                 var txtNumeros  = dialogLayout.findViewById<EditText>(R.id.txtNumeros)
                 builder.setView(dialogLayout)
                 builder.setPositiveButton("Confirmar", DialogInterface.OnClickListener{
-                    dialog, which ->
+                    _, _ ->
                     val intent = Intent(this, LotoFacilActivity::class.java)
                     intent.putExtra("qt", txtNumeros.text.toString().toInt())
                     startActivity(intent)
@@ -86,16 +87,36 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
         }
 
         binding.btnTeste.setOnClickListener(){
-            getData()
+            getResult()
         }
     }
 
-    fun getData() {
+    fun getResult() {
         val retrofitClient = DataService
             .getRetrofitInstance("https://loteriascaixa-api.herokuapp.com/api/")
 
         val endpoint = retrofitClient.create(EndPoint::class.java)
-        val callback = endpoint.getConcurso()
+        val concurso = binding.spinner.selectedItem.toString()
+        val callback = endpoint.getConcurso(concurso)
+
+        var aux = binding.txtJogo.text.split("\n")
+        var lista = mutableListOf<ArrayList<Int>>()
+        var array = arrayListOf<Int>()
+        var acertosArray = arrayListOf<Int>()
+
+        for(i in aux){
+            if(i!="") {
+                var aux2 = i.split(",")
+                for (j in aux2) {
+                    if (j != "")
+                        array.add(j.toInt())
+                }
+                val copiaArray = arrayListOf<Int>()
+                copiaArray.addAll(array)
+                lista.add(copiaArray)
+                array.clear()
+            }
+        }
 
         callback.enqueue(object : Callback<Result> {
             override fun onFailure(call: Call<Result>, t: Throwable) {
@@ -104,9 +125,50 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
 
 
             override fun onResponse(call: Call<Result>, response: Response<Result>) {
-                    binding.txtResult.text = binding.txtResult.text.toString().plus(response.body())
+                var acertos = 0
+                for(jogo in lista){
+                    for(numero in response.body()!!.dezenas){
+                        if(jogo.contains(numero.toInt())){
+                            acertos++
+                        }
+                    }
+                    acertosArray.add(acertos)
+                    acertos=0
+                }
+                binding.txtResult.text = "Acertos em cada jogo: \n"
+                for (i in 0..acertosArray.size-1){
+                    binding.txtResult.text = binding.txtResult.text.toString() + "\nJogo "+(i+1)+": "+acertosArray[i]
+                }
             }
         })
-
     }
+
+
+    fun getUltimo() {
+        val retrofitClient = DataService
+            .getRetrofitInstance("https://loteriascaixa-api.herokuapp.com/api/")
+
+        val endpoint = retrofitClient.create(EndPoint::class.java)
+        val callback = endpoint.getConcurso("latest")
+
+        callback.enqueue(object : Callback<Result> {
+            override fun onFailure(call: Call<Result>, t: Throwable) {
+                Toast.makeText(baseContext, t.message, Toast.LENGTH_SHORT).show()
+            }
+
+
+            override fun onResponse(call: Call<Result>, response: Response<Result>) {
+
+                montarListaDeJogos(response.body()!!.concurso)
+            }
+        })
+    }
+
+    fun montarListaDeJogos(last: Int){
+        val list = MutableList(last) { index -> last - index }
+        val adapter = ArrayAdapter(this,
+            android.R.layout.simple_spinner_item, list)
+        binding.spinner.adapter = adapter
+    }
+
 }
