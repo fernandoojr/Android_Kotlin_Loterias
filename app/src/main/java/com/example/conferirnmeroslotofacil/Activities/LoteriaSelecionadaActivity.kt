@@ -24,6 +24,7 @@ import kotlin.Exception
 class LoteriaSelecionadaActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoteriaSelecionadaBinding
+    private lateinit var concurso:String
 
     override fun onStart() {
         super.onStart()
@@ -32,12 +33,10 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
 
         try {
             val banco: SQLiteDatabase = openOrCreateDatabase("app", MODE_PRIVATE, null)
-            var consulta = "SELECT loto, numeros FROM loteria where loto = 'lotofacil'"
+            var consulta = "SELECT loto, numeros FROM loteria where loto = '"+concurso+"'"
             var cursor: Cursor = banco.rawQuery(consulta, null)
 
             var indiceNumeros = cursor.getColumnIndex("numeros")
-
-
 
             cursor.moveToFirst()
             while (cursor != null) {
@@ -62,28 +61,34 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        getUltimo()
+        concurso = intent.getStringExtra("concurso").toString()
 
-        var concurso = intent.getStringExtra("concurso")
+        getUltimo()
 
         binding.txtTexto.text = concurso
 
         binding.btnCadastrarJogo.setOnClickListener(){
-            if(concurso.equals("LotoFacil")){
-                val builder = AlertDialog.Builder(this)
-                val inflater = layoutInflater
-                builder.setTitle("Selecione a quantidade de números do jogo")
-                val dialogLayout = inflater.inflate(R.layout.numeros_lotofacil, null)
-                var txtNumeros  = dialogLayout.findViewById<EditText>(R.id.txtNumeros)
-                builder.setView(dialogLayout)
-                builder.setPositiveButton("Confirmar", DialogInterface.OnClickListener{
-                    _, _ ->
+
+            val builder = AlertDialog.Builder(this)
+            val inflater = layoutInflater
+            builder.setTitle("Selecione a quantidade de números do jogo")
+            val dialogLayout = inflater.inflate(R.layout.numeros, null)
+            var txtNumeros  = dialogLayout.findViewById<EditText>(R.id.txtNumeros)
+            builder.setView(dialogLayout)
+            builder.setPositiveButton("Confirmar", DialogInterface.OnClickListener{
+                _, _ ->
+                if(concurso.equals("lotofacil")){
                     val intent = Intent(this, LotoFacilActivity::class.java)
                     intent.putExtra("qt", txtNumeros.text.toString().toInt())
                     startActivity(intent)
-                })
-                builder.show()
-            }
+                }
+                if(concurso.equals("mega-sena")){
+                    val intent = Intent(this, MegaSenaActivity::class.java)
+                    intent.putExtra("qt", txtNumeros.text.toString().toInt())
+                    startActivity(intent)
+                }
+            })
+            builder.show()
         }
 
         binding.btnTeste.setOnClickListener(){
@@ -93,11 +98,11 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
 
     fun getResult() {
         val retrofitClient = DataService
-            .getRetrofitInstance("https://loteriascaixa-api.herokuapp.com/api/")
+            .getRetrofitInstance("https://loteriascaixa-api.herokuapp.com/api/"+concurso+"/")
 
         val endpoint = retrofitClient.create(EndPoint::class.java)
-        val concurso = binding.spinner.selectedItem.toString()
-        val callback = endpoint.getConcurso(concurso)
+        val nConcurso = binding.spinner.selectedItem.toString()
+        val callback = endpoint.getConcurso(nConcurso)
 
         var aux = binding.txtJogo.text.split("\n")
         var lista = mutableListOf<ArrayList<Int>>()
@@ -146,7 +151,7 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
 
     fun getUltimo() {
         val retrofitClient = DataService
-            .getRetrofitInstance("https://loteriascaixa-api.herokuapp.com/api/")
+            .getRetrofitInstance("https://loteriascaixa-api.herokuapp.com/api/"+concurso+"/")
 
         val endpoint = retrofitClient.create(EndPoint::class.java)
         val callback = endpoint.getConcurso("latest")
@@ -158,7 +163,6 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
 
 
             override fun onResponse(call: Call<Result>, response: Response<Result>) {
-
                 montarListaDeJogos(response.body()!!.concurso)
             }
         })

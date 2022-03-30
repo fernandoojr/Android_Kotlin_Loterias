@@ -20,8 +20,7 @@ class LotoFacilActivity : AppCompatActivity() {
         setContentView(view)
 
         var qt = intent.getIntExtra("qt", 15)
-
-        val sorteados = mutableListOf<Int>(qt)
+        binding.textView.text = "Selecione os $qt números desejados"
 
         binding.btnSalvar.setOnClickListener(){
             if(cont == qt){

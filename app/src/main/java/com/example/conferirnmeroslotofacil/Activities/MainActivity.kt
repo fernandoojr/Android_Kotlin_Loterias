@@ -22,19 +22,19 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, LoteriaSelecionadaActivity::class.java)
 
         binding.btnMegaSena.setOnClickListener(){
-            intent.putExtra("concurso", "Mega-Sena")
+            intent.putExtra("concurso", "mega-sena")
             startActivity(intent)
         }
         binding.btnQuina.setOnClickListener(){
-            intent.putExtra("concurso", "Quina")
+            intent.putExtra("concurso", "quina")
             startActivity(intent)
         }
         binding.btnLotoFacil.setOnClickListener(){
-            intent.putExtra("concurso", "LotoFacil")
+            intent.putExtra("concurso", "lotofacil")
             startActivity(intent)
         }
         binding.btnLotoMania.setOnClickListener(){
-            intent.putExtra("concurso", "LotoMania")
+            intent.putExtra("concurso", "lotomania")
             startActivity(intent)
         }
     }
