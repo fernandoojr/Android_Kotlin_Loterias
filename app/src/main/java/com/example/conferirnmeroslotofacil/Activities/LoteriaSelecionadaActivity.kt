@@ -8,8 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.conferirnmeroslotofacil.Adapter.AdapterJogo
 import com.example.conferirnmeroslotofacil.Model.Result
 import com.example.conferirnmeroslotofacil.R
 import com.example.conferirnmeroslotofacil.Services.DataService
@@ -25,11 +30,13 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoteriaSelecionadaBinding
     private lateinit var concurso:String
+    private var listaString = arrayListOf<String>()
 
     override fun onStart() {
         super.onStart()
+        listaString.clear()
 
-        binding.txtJogo.text = ""
+        //binding.txtJogo.text = ""
 
         try {
             val banco: SQLiteDatabase = openOrCreateDatabase("app", MODE_PRIVATE, null)
@@ -39,20 +46,29 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
             var indiceNumeros = cursor.getColumnIndex("numeros")
 
             cursor.moveToFirst()
+
             while (cursor != null) {
                 var numeros: String = cursor.getString(indiceNumeros)
-                binding.txtJogo.text = binding.txtJogo.text.toString() + numeros + "\n"
-                //if(binding.txtJogo.text == "\n" || binding.txtJogo.text == "" || binding.txtJogo.text == null)
-                //binding.txtJogo.text = "Você não possui jogo cadastrado ainda"
-
+                listaString.add(numeros)
+                //binding.txtJogo.text = binding.txtJogo.text.toString() + numeros + "\n"
                 cursor.moveToNext();
             }
             cursor.close()
+            banco.close()
         }catch (ex: IndexOutOfBoundsException){
 
         }catch (ex: Exception){
-            binding.txtJogo.text = "Você não possui jogo cadastrado ainda"
+            //binding.txtJogo.text = "Você não possui jogo cadastrado ainda"
         }
+
+        //Configurar adapter
+        var adapterJogo: AdapterJogo = AdapterJogo(listaString, this)
+
+        var layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(getApplicationContext())
+        binding.recyclerView.setLayoutManager(layoutManager);
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayout.VERTICAL));
+        binding.recyclerView.setAdapter(adapterJogo);
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,7 +120,7 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
         val nConcurso = binding.spinner.selectedItem.toString()
         val callback = endpoint.getConcurso(nConcurso)
 
-        var aux = binding.txtJogo.text.split("\n")
+        var aux = listaString
         var lista = mutableListOf<ArrayList<Int>>()
         var array = arrayListOf<Int>()
         var acertosArray = arrayListOf<Int>()
