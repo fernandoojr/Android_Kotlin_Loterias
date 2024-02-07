@@ -37,5 +37,6 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("concurso", "lotomania")
             startActivity(intent)
         }
+        //teste
     }
 }
