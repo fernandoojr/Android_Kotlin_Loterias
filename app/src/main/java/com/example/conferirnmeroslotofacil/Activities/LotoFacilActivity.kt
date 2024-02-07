@@ -24,7 +24,7 @@ class LotoFacilActivity : AppCompatActivity() {
 
         binding.btnSalvar.setOnClickListener(){
             if(cont == qt){
-                val numeros: IntArray = IntArray(qt)
+                val numeros = IntArray(qt)
                 var j = 0
                 for(i: Int in 0..24) {
                     if (botoes[i]) {
@@ -32,9 +32,10 @@ class LotoFacilActivity : AppCompatActivity() {
                         j++
                     }
                 }
-                var jogo: String = ""
+                var jogo = ""
                 for(i: Int in numeros){
-                    jogo = jogo + i + ","
+                    //jogo = jogo + i + ","
+                    jogo = "$jogo$i,"
                 }
 
                 val banco: SQLiteDatabase = openOrCreateDatabase("app", MODE_PRIVATE, null)
