@@ -62,7 +62,7 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
         }
 
         //Configurar adapter
-        var adapterJogo: AdapterJogo = AdapterJogo(listaString, this)
+        var adapterJogo = AdapterJogo(listaString, this)
 
         var layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(getApplicationContext())
         binding.recyclerView.setLayoutManager(layoutManager);
@@ -157,7 +157,7 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
                     acertos=0
                 }
                 binding.txtResult.text = "Acertos em cada jogo: \n"
-                for (i in 0..acertosArray.size-1){
+                for (i in 0 until acertosArray.size){
                     binding.txtResult.text = binding.txtResult.text.toString() + "\nJogo "+(i+1)+": "+acertosArray[i]
                 }
             }
