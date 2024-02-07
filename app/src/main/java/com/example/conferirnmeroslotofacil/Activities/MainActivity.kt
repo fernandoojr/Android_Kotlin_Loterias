@@ -33,10 +33,9 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("concurso", "lotofacil")
             startActivity(intent)
         }
-        binding.btnLotoMania.setOnClickListener(){
+        binding.btnLotoMania.setOnClickListener() {
             intent.putExtra("concurso", "lotomania")
             startActivity(intent)
         }
-        //teste
     }
 }
