@@ -160,6 +160,9 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
                 for (i in 0 until acertosArray.size){
                     binding.txtResult.text = binding.txtResult.text.toString() + "\nJogo "+(i+1)+": "+acertosArray[i]
                 }
+                var ganhadores = response.body()!!.premiacoes[0].ganhadores
+                var premiacao = response.body()!!.premiacoes[0].valorPremio
+                binding.txtInfo.text = "Total de ganhadores: $ganhadores\n Prêmio com 15 acertos: R$ ${premiacao.toString()}"
             }
         })
     }
