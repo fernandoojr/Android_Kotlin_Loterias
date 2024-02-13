@@ -6,6 +6,5 @@ class Premiacao {
 
     lateinit var acertos: String
     var ganhadores: Int = 0
-    var valorPremio: Float = 0.0f
-
+    var valorPremio: Double = 0.00
 }

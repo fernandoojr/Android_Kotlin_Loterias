@@ -4,13 +4,13 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,8 +23,9 @@ import com.example.conferirnmeroslotofacil.databinding.ActivityLoteriaSelecionad
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.IndexOutOfBoundsException
-import kotlin.Exception
+import java.text.DecimalFormat
+import java.text.Format
+import java.text.NumberFormat
 
 class LoteriaSelecionadaActivity : AppCompatActivity() {
 
@@ -162,7 +163,13 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
                 }
                 var ganhadores = response.body()!!.premiacoes[0].ganhadores
                 var premiacao = response.body()!!.premiacoes[0].valorPremio
-                binding.txtInfo.text = "Total de ganhadores: $ganhadores\n Prêmio com 15 acertos: R$ ${premiacao.toString()}"
+                val formatter: Format = DecimalFormat("#,###.00")
+                //premiacao.toString().replace('.', ',').format()
+                binding.txtInfo.text = "Total de ganhadores: $ganhadores\n Prêmio com 15 acertos: R$ ${formatter.format(premiacao)
+                    .toString()
+                    .replace(",",";")
+                    .replace(".",",")
+                    .replace(";", ".")}"
             }
         })
     }
