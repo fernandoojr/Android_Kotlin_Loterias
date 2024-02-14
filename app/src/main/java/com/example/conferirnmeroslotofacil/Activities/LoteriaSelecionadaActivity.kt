@@ -1,6 +1,5 @@
 package com.example.conferirnmeroslotofacil.Activities
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -89,19 +88,18 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
             val dialogLayout = inflater.inflate(R.layout.numeros, null)
             var txtNumeros  = dialogLayout.findViewById<EditText>(R.id.txtNumeros)
             builder.setView(dialogLayout)
-            builder.setPositiveButton("Confirmar", DialogInterface.OnClickListener{
-                _, _ ->
-                if(concurso.equals("lotofacil")){
+            builder.setPositiveButton("Confirmar") { _, _ ->
+                if (concurso.equals("lotofacil")) {
                     val intent = Intent(this, LotoFacilActivity::class.java)
                     intent.putExtra("qt", txtNumeros.text.toString().toInt())
                     startActivity(intent)
                 }
-                if(concurso.equals("mega-sena")){
+                if (concurso.equals("megasena")) {
                     val intent = Intent(this, MegaSenaActivity::class.java)
                     intent.putExtra("qt", txtNumeros.text.toString().toInt())
                     startActivity(intent)
                 }
-            })
+            }
             builder.show()
         }
 
@@ -160,7 +158,7 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
                 }
                 var ganhadores = response.body()!!.premiacoes[0].ganhadores
                 var premiacao = response.body()!!.premiacoes[0].valorPremio
-                var premioFormatado = ""
+                var premioFormatado: String
                 if(premiacao == 0.0){
                     premioFormatado = "0,00"
                 }else{

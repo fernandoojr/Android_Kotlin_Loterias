@@ -11,7 +11,7 @@ class LotoFacilActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLotofacilBinding
     private var cont: Int = 0
-    private var botoes = Array(25, {i->false})
+    private var botoes = Array(25) { _ -> false }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +34,6 @@ class LotoFacilActivity : AppCompatActivity() {
                 }
                 var jogo = ""
                 for(i: Int in numeros){
-                    //jogo = jogo + i + ","
                     jogo = "$jogo$i,"
                 }
 
@@ -52,11 +51,11 @@ class LotoFacilActivity : AppCompatActivity() {
             if(cont < qt && !botoes[0]) {
                 cont++
                 botoes[0] = true
-                binding.btn1.setBackgroundColor(getResources().getColor(R.color.black))
+                binding.btn1.setBackgroundColor(resources.getColor(R.color.black))
             }else if(botoes[0]){
                 cont--
                 botoes[0] = false
-                binding.btn1.setBackgroundColor(getResources().getColor(R.color.teal_700))
+                binding.btn1.setBackgroundColor(resources.getColor(R.color.teal_700))
             }else{
                 Toast.makeText(this, "Desmarque um número para adicionar outro", Toast.LENGTH_LONG).show()
             }

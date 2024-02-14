@@ -1,21 +1,20 @@
 package com.example.conferirnmeroslotofacil.Model
 
-import kotlin.properties.Delegates
 
 class Result {
-    lateinit var loteria: String
-    lateinit var nome: String
+    //lateinit var loteria: String
+    //lateinit var nome: String
     var concurso: Int = 0
-    lateinit var data: String
-    lateinit var local: String
+    //lateinit var data: String
+    //lateinit var local: String
     lateinit var dezenas: Array<String>
     lateinit var premiacoes: Array<Premiacao>
-    var acumulou: Boolean = false
-    lateinit var acumuladaProxConcurso: String
-    lateinit var dataProxConcurso: String
-    var proxConcurso: Int = 0
-    lateinit var timeCoracao: String
-    lateinit var mesSorte: String
+    //var acumulou: Boolean = false
+    //lateinit var acumuladaProxConcurso: String
+    //lateinit var dataProxConcurso: String
+    //var proxConcurso: Int = 0
+    //lateinit var timeCoracao: String
+    //lateinit var mesSorte: String
 }
 
 /*

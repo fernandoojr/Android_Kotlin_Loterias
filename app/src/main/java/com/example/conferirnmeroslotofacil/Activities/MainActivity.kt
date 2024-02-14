@@ -1,7 +1,6 @@
 package com.example.conferirnmeroslotofacil.Activities
 
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.conferirnmeroslotofacil.databinding.ActivityMainBinding
@@ -22,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, LoteriaSelecionadaActivity::class.java)
 
         binding.btnMegaSena.setOnClickListener(){
-            intent.putExtra("concurso", "mega-sena")
+            intent.putExtra("concurso", "megasena")
             startActivity(intent)
         }
         binding.btnQuina.setOnClickListener(){

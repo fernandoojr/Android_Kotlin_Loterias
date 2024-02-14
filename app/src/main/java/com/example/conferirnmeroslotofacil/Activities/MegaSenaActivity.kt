@@ -11,7 +11,7 @@ class MegaSenaActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMegaSenaBinding
     private var cont: Int = 0
-    private var botoes = Array(60, {i->false})
+    private var botoes = Array(60) { _ -> false }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,7 @@ class MegaSenaActivity : AppCompatActivity() {
 
         binding.btnSalvar.setOnClickListener(){
             if(cont == qt){
-                val numeros: IntArray = IntArray(qt)
+                val numeros = IntArray(qt)
                 var j = 0
                 for(i: Int in 0..59) {
                     if (botoes[i]) {
@@ -33,12 +33,12 @@ class MegaSenaActivity : AppCompatActivity() {
                 }
                 var jogo = ""
                 for(i: Int in numeros){
-                    jogo = jogo + i + ","
+                    jogo = "$jogo$i,"
                 }
 
                 val banco: SQLiteDatabase = openOrCreateDatabase("app", MODE_PRIVATE, null)
                 banco.execSQL("CREATE TABLE IF NOT EXISTS loteria (loto VARCHAR, numeros VARCHAR)")
-                var sql = "INSERT INTO loteria(loto, numeros) VALUES ('mega-sena', '" + jogo + "')"
+                var sql = "INSERT INTO loteria(loto, numeros) VALUES ('megasena', '$jogo')"
                 banco.execSQL(sql)
                 finish()
             }else{

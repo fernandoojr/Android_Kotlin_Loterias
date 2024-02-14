@@ -2,7 +2,6 @@ package com.example.conferirnmeroslotofacil.Adapter
 
 import android.app.Activity
 import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteDatabase.openOrCreateDatabase
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,9 +27,9 @@ class AdapterJogo(lista: MutableList<String>, ac: Activity) : RecyclerView.Adapt
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val jogo: String = listaJogo[position]
         holder.txtSeuJogo.setText(jogo)
-        holder.btnRemover.setOnClickListener(){
+        holder.btnRemover.setOnClickListener{
             val banco: SQLiteDatabase = activity.openOrCreateDatabase("app", AppCompatActivity.MODE_PRIVATE, null)
-            var consulta = "DELETE FROM loteria where numeros = '"+jogo+"'"
+            val consulta = "DELETE FROM loteria where numeros = '$jogo'"
             banco.execSQL(consulta)
             listaJogo.remove(jogo)
             notifyDataSetChanged()
