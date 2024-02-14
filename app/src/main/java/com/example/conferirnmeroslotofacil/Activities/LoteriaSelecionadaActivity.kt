@@ -23,9 +23,6 @@ import com.example.conferirnmeroslotofacil.databinding.ActivityLoteriaSelecionad
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.DecimalFormat
-import java.text.Format
-import java.text.NumberFormat
 
 class LoteriaSelecionadaActivity : AppCompatActivity() {
 
@@ -163,13 +160,15 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
                 }
                 var ganhadores = response.body()!!.premiacoes[0].ganhadores
                 var premiacao = response.body()!!.premiacoes[0].valorPremio
-                val formatter: Format = DecimalFormat("#,###.00")
-                //premiacao.toString().replace('.', ',').format()
-                binding.txtInfo.text = "Total de ganhadores: $ganhadores\n Prêmio com 15 acertos: R$ ${formatter.format(premiacao)
-                    .toString()
-                    .replace(",",";")
-                    .replace(".",",")
-                    .replace(";", ".")}"
+                var premioFormatado = ""
+                if(premiacao == 0.0){
+                    premioFormatado = "0,00"
+                }else{
+                    premioFormatado = formatarDinheiro(premiacao)
+                }
+
+                binding.txtInfo.text = "Total de ganhadores: $ganhadores\n Prêmio com 15 acertos: R$ $premioFormatado"
+
             }
         })
     }
@@ -199,5 +198,36 @@ class LoteriaSelecionadaActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this,
             android.R.layout.simple_spinner_item, list)
         binding.spinner.adapter = adapter
+    }
+
+    fun  formatarDinheiro(premio: Double): String{
+        var premioformatado = premio.toString()
+        var aux = premioformatado.split(".")
+        var decimal = aux[1]
+        var array = aux[0].toCharArray()
+        var i: Int = array.size-1
+        var formatado = ""
+        var contador = 0
+        while ( i >= 0){
+            if (contador == 3){
+                formatado += "."
+                contador = 0
+            }
+            formatado += array[i].toString()
+            contador++
+            i--
+        }
+        array = formatado.toCharArray()
+        var formatado2 = ""
+        i = array.size-1
+        while ( i >= 0){
+            formatado2 += array[i].toString()
+            i--
+        }
+        array = decimal.toCharArray()
+        if(array.size <2)
+            decimal += "0"
+
+        return "$formatado2,$decimal"
     }
 }
